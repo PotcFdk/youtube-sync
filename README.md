@@ -1,7 +1,10 @@
 # youtube-sync
+
 Script for maintaining an up-to-date offline mirror of a YouTube channel or playlist.  
 Uses [youtube-dl](https://github.com/rg3/youtube-dl/) for interacting with YouTube.  
 Usage help [here](#usage) (though, you should read all of that stuff below to know what's going on!).
+
+youtube-sync is developed and maintained [on GitHub](https://github.com/PotcFdk/youtube-sync)  
 
 **/!\ This project is a WIP and it shouldn't be considered stable. /!\**  
 In fact, [future changes](https://github.com/PotcFdk/youtube-sync/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) might change the way `youtube-sync` works, both internally and interface-wise. This README will always be kept up-to-date to reflect the current state of how everything works.
