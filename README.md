@@ -1,5 +1,5 @@
 # youtube-sync
-Script for keeping an up-to-date offline mirror of a YouTube channel or playlist.  
+Script for maintaining an up-to-date offline mirror of a YouTube channel or playlist.  
 Uses [youtube-dl](https://github.com/rg3/youtube-dl/) for interacting with YouTube.
 
 ### What can this script do that youtube-dl can't?
