@@ -5,15 +5,16 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
-FILES=SYNC/$1/ID/*.mkv
-
 mkdir -p SYNC/$1/META
 
-for filen in $FILES; do
+num_total=$(find "SYNC/$1/ID/" -maxdepth 1 -name "*.mkv" | wc -l)
+num_current=1
+
+for filen in SYNC/$1/ID/*.mkv; do
 	if [ -f "$filen" ]; then
 		if [[ "$filen" =~ /([^/]+)\.mkv$ ]]; then
 			ID=${BASH_REMATCH[1]};
-			echo -n "Updating metadata: $ID...";
+			echo -n "Updating metadata ($num_current/$num_total): $ID...";
 			TITLE=$(./youtube-dl --get-filename -o '%(title)s' "$ID");
 			if [ -z "$TITLE" ]; then
 				echo " [Error] Video might be down. We'll keep the old link."
@@ -27,4 +28,5 @@ for filen in $FILES; do
 			fi
 		fi
 	fi
+	num_current=$((num_current+1))
 done
