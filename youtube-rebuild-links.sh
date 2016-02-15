@@ -18,7 +18,7 @@ for titlepath in SYNC/$1/TITLE/*; do
 	read -r TITLE < $titlepath
 	if [[ "$titlepath" =~ /([^/]+)$ ]]; then
 		ID=${BASH_REMATCH[1]};
-		echo "Creating link: $ID -> $TITLE.mkv"
-		ln -s "../ID/$ID.mkv" "SYNC/$1/LINK/$TITLE.mkv"
+		echo "Creating link: $ID -> $TITLE.$ID.mkv"
+		ln -s "../ID/$ID.mkv" "SYNC/$1/LINK/$TITLE.$ID.mkv"
 	fi
 done
