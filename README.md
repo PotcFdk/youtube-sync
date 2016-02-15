@@ -33,7 +33,7 @@ If the video is still up, the metadata will be updated. If it has been taken dow
 
 #### Section 3: symlinks
 Here's where sections 1 and 2 come together.  
-This step updates symlinks in `SYNC/.../TITLE/[videotitle].mkv` that point at the correct file in `SYNC/.../ID/[videoid].mkv`.  
+This step updates symlinks in `SYNC/.../LINK/[videotitle].mkv` so that they point at the correct file in `SYNC/.../ID/[videoid].mkv`.  
 That way, you will have a directory with files (symlinks) that contain the video's up-to-date title.
 
 ### How can I keep my local copy up-to-date?
