@@ -1,6 +1,7 @@
 # youtube-sync
 Script for maintaining an up-to-date offline mirror of a YouTube channel or playlist.  
-Uses [youtube-dl](https://github.com/rg3/youtube-dl/) for interacting with YouTube.
+Uses [youtube-dl](https://github.com/rg3/youtube-dl/) for interacting with YouTube.  
+Usage help [here](#usage) (though, you should read all of that stuff below to know what's going on!).
 
 ### What can this script do that youtube-dl can't?
 This script improves the management of a local copy of an entire YouTube channel.  
@@ -34,6 +35,12 @@ Just re-do the three steps above:
 * Step 1 will download all missing videos that have been added to the channel since your last sync. Old videos are left untouched and will stay in your local copy, even if they are deleted from the YouTube channel.  
 * Step 2 will update all cached video titles. If an old video has been taken down, the old video title will be left untouched.  
 * Step 3 will remove all symlinks and rebuild them using the title cache from step 2. This way, you will always have a directory where the videos have the most up-to-date video title in their file name.  
+
+## Usage
+
+`./youtube-sync.sh NAME URL` - Create a working directory in `SYNC/[NAME]` and download all videos of `URL` to `SYNC/[NAME]/ID/[videoid].mkv`.  
+`./youtube-update-titles.sh NAME` - Update the video title cache in `SYNC/[NAME]/TITLE`.  
+`./youtube-rebuild-links.sh NAME` - Recreate all symlinks in `SYNC/[NAME]/LINK` using the video title cache.  
 
 ## I want to see an example!
 Sure thing, here you go, the basic workflow for the initial sync of a channel (`https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`):  
