@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+	>&2 echo "Missing sync directory name."
+	exit 1
+fi
+
 FILES=SYNC/$1/ID/*.mkv
 
 mkdir -p SYNC/$1/TITLE

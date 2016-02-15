@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+	>&2 echo "Missing sync directory name."
+	exit 1
+fi
+
 mkdir -p SYNC/$1/LINK
 
 if [ ! -d SYNC/$1/TITLE ]; then
 	>&1 echo "Error: /TITLE directory doesn't exist for $1"
-	exit
+	exit 1
 fi
 
 rm SYNC/$1/LINK/*.mkv
