@@ -33,7 +33,7 @@ That way, you will have a directory with files (symlinks) that contain the video
 Just re-do the three steps above:  
 * Step 1 will download all missing videos that have been added to the channel since your last sync. Old videos are left untouched and will stay in your local copy, even if they are deleted from the YouTube channel.  
 * Step 2 will update all cached video titles. If an old video has been taken down, the old video title will be left untouched.  
-* Step 3 will remove all symlinks and rebuild them using the video cache from step 2. This way, you will always have a directory where the videos have the most up-to-date video title in their file name.  
+* Step 3 will remove all symlinks and rebuild them using the title cache from step 2. This way, you will always have a directory where the videos have the most up-to-date video title in their file name.  
 
 ## I want to see an example!
 Sure thing, here you go, the basic workflow for the initial sync of a channel (`https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`):  
