@@ -14,8 +14,11 @@ fi
 
 rm SYNC/$1/LINK/*.mkv
 
-for ID in SYNC/$1/TITLE/*; do
-	read -r TITLE < $ID
-	echo "Creating link: $ID -> $TITLE.mkv"
-	ln -s "SYNC/$1/ID/$ID.mkv" "SYNC/$1/LINK/$TITLE.mkv"
+for titlepath in SYNC/$1/TITLE/*; do
+	read -r TITLE < $titlepath
+	if [[ "$titlepath" =~ /([^/]+)$ ]]; then
+		ID=${BASH_REMATCH[1]};
+		echo "Creating link: $ID -> $TITLE.mkv"
+		ln -s "../ID/$ID.mkv" "SYNC/$1/LINK/$TITLE.mkv"
+	fi
 done
