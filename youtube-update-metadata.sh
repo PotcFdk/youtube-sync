@@ -15,13 +15,13 @@ for filen in SYNC/$1/ID/*.mkv; do
 		if [[ "$filen" =~ /([^/]+)\.mkv$ ]]; then
 			ID=${BASH_REMATCH[1]};
 			echo -n "Updating metadata ($num_current/$num_total): $ID...";
-			TITLE=$(./youtube-dl --get-filename -o '%(title)s' "$ID");
+			TITLE=$(youtube-dl --get-filename -o '%(title)s' "$ID");
 			if [ -z "$TITLE" ]; then
 				echo " [Error] Video might be down. We'll keep the old link."
 			else
 				echo " [OK]"
 				echo -n "$TITLE" > SYNC/$1/META/$ID.title
-				DESCRIPTION=$(./youtube-dl --get-description "$ID");
+				DESCRIPTION=$(youtube-dl --get-description "$ID");
 				if [ -n "$DESCRIPTION" ]; then
 					echo "$DESCRIPTION" > SYNC/$1/META/$ID.description
 				fi
