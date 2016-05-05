@@ -135,7 +135,6 @@ function showHelp {
 	elif [ "$1" = "symlinks" ]; then
 		echo -e "Command: symlinks - usage: $0 symlinks <profilename>\n"
 		echo "Clear all symlinks in a profile and recreates them using the cached metadata."
-	
 	else
 		echo -e "Available commands:\n"
 		echo "$0 help       - Shows this help."
