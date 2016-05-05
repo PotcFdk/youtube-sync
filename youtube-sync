@@ -77,12 +77,17 @@ function showHelp {
 	elif [ "$1" = "update" ]; then
 		echo -e "Command: help - usage: $0 update <profilename>\n"
 		echo "Updates a profile by fetching all new content along with its metadata."
+	elif [ "$1" = "update-all" ]; then
+		echo -e "Command: help - usage: $0 update-all <profilename>\n"
+		echo "Updates a profile by fetching all new content along with its metadata."
+		echo "In addition to that, this also updates the metadata of all existing content."
 	else
 		echo -e "Available commands:\n"
-		echo "$0 help   - Shows this help."
-		echo "$0 setup  - Setup content syncing profile."
-		echo "$0 list   - List content syncing profiles."
-		echo "$0 update - Update content."
+		echo "$0 help       - Shows this help."
+		echo "$0 setup      - Setup content syncing profile."
+		echo "$0 list       - List content syncing profiles."
+		echo "$0 update     - Fetch new content for a profile."
+		echo "$0 update-all - Fetch new content and update all old metadata."
 		echo -e "\nRun $0 help <command> to show more details and usage help."
 	fi
 }
