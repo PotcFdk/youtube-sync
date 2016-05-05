@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function showHelp {
+	if [ "$1" = "help" ]; then
+		echo -e "Command: help - usage: $0 help <command>\n"
+		echo "Shows help for a given command or a list of available commands if no command is specified."
+	elif [ "$1" = "setup" ]; then
+		echo -e "Command: setup - usage: $0 setup <profilename> <URL>\n"
+		echo "Sets up a new profile with the name <profilename> which will be saved to SYNC/<profilename> and will be linked to <URL>. After setting up a profile, you will be able to sync it using the update command."
+	elif [ "$1" = "list" ]; then
+		echo -e "Command: list - usage: $0 list\n"
+		echo "List all existing profiles."
+	elif [ "$1" = "update" ]; then
+		echo -e "Command: help - usage: $0 update <profilename>\n"
+		echo "Updates a profile by fetching all new content along with its metadata."
+	else
+		echo -e "Available commands:\n"
+		echo "$0 help   - Shows this help."
+		echo "$0 setup  - Setup content syncing profile."
+		echo "$0 list   - List content syncing profiles."
+		echo "$0 update - Update content."
+		echo -e "\nRun $0 help <command> to show more details and usage help."
+	fi
+}
+
+if [ -z "$1" ]; then
+	>&2 echo "Missing command."
+	showHelp
+	exit 1
+elif [ "$1" = "help" ]; then
+	showHelp "${@:2}"
+fi
