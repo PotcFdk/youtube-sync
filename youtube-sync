@@ -95,14 +95,14 @@ function showHelp {
 		echo -e "Command: list - usage: $0 list\n"
 		echo "List all existing profiles."
 	elif [ "$1" = "update" ]; then
-		echo -e "Command: help - usage: $0 update <profilename>\n"
+		echo -e "Command: update - usage: $0 update <profilename>\n"
 		echo "Updates a profile by fetching all new content along with its metadata."
 	elif [ "$1" = "update-all" ]; then
-		echo -e "Command: help - usage: $0 update-all <profilename>\n"
+		echo -e "Command: update-all - usage: $0 update-all <profilename>\n"
 		echo "Updates a profile by fetching all new content along with its metadata."
 		echo "In addition to that, this also updates the metadata of all existing content."
 	elif [ "$1" = "symlinks" ]; then
-		echo -e "Command: help - usage: $0 symlinks <profilename>\n"
+		echo -e "Command: symlinks - usage: $0 symlinks <profilename>\n"
 		echo "Clear all symlinks in a profile and recreates them using the cached metadata."
 	
 	else
