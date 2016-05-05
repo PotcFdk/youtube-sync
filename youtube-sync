@@ -1,5 +1,52 @@
 #!/bin/bash
 
+function update_metadata {
+	ID="$1"
+	titlefile="$2"
+	descfile="$3"
+	
+	echo -n "Updating metadata: $ID...";
+	
+	TITLE=$(youtube-dl --get-filename -o '%(title)s' -- "$ID");
+	if [ -z "$TITLE" ]; then
+		echo " [Error] Empty title. Video might be down. We'll keep the old link."
+	else
+		echo " [OK]"
+		echo -n "$TITLE" > $titlefile
+		DESCRIPTION=$(youtube-dl --get-description -- "$ID");
+		if [ -n "$DESCRIPTION" ]; then
+			echo "$DESCRIPTION" > $descfile
+		fi
+	fi
+}
+
+function update_all_metadata {
+	name="$1"
+	domissing="$2"
+
+	num_total=$(find "SYNC/$name/ID/" -maxdepth 1 -name "*.mkv" | wc -l)
+	num_current=1
+
+	for filen in SYNC/$name/ID/*.mkv; do
+		if [ -f "$filen" ]; then
+			if [[ "$filen" =~ /([^/]+)\.mkv$ ]]; then
+				ID=${BASH_REMATCH[1]};
+				titlefile="SYNC/$name/META/$ID.title"
+				descfile="SYNC/$name/META/$ID.description"
+				if [ "$domissing" = "missing-only" \
+						-a -f $titlefile -a -f $descfile ]; then
+					echo "Skipping known meta for $ID"
+					num_current=$((num_current+1))
+				else
+					echo -n "($num_current/$num_total) ";
+					update_metadata "$ID" "$titlefile" "$descfile"
+				fi
+			fi
+		fi
+		num_current=$((num_current+1))
+	done
+}
+
 function sync {
 	if [ -n "$2" ]; then
 		URL="$2"
@@ -58,5 +105,21 @@ elif [ "$1" = "setup" ]; then
 	else
 		>&2 echo "Invalid URL."
 		exit 1
+	fi
+elif [ "$1" = "update" ]; then
+	if [ -z "$2" ]; then
+		>&2 echo "Missing sync directory name."
+		exit 1
+	else
+		sync "$2"
+		update_all_metadata "$2" "missing-only"
+	fi
+elif [ "$1" = "update-all" ]; then
+	if [ -z "$2" ]; then
+		>&2 echo "Missing sync directory name."
+		exit 1
+	else
+		sync "$2"
+		update_all_metadata "$2"
 	fi
 fi
