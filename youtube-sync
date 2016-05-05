@@ -1,5 +1,22 @@
 #!/bin/bash
 
+function sync {
+	if [ -n "$2" ]; then
+		URL="$2"
+		mkdir -p "SYNC/$1/META"
+		echo -n "$URL" > "SYNC/$1/META/source"
+	elif [ -f "SYNC/$1/META/source" ]; then
+		read -r URL < "SYNC/$1/META/source"
+	else
+		>&2 echo "Fatal error: Missing URL in profile '$1'."
+		exit 1
+	fi
+
+	youtube-dl -i -f bestvideo+bestaudio --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
+}
+
+#
+
 function showHelp {
 	if [ "$1" = "help" ]; then
 		echo -e "Command: help - usage: $0 help <command>\n"
@@ -29,4 +46,17 @@ if [ -z "$1" ]; then
 	exit 1
 elif [ "$1" = "help" ]; then
 	showHelp "${@:2}"
+elif [ "$1" = "setup" ]; then
+	if [ -z "$2" ]; then
+		>&2 echo "Missing sync directory name."
+		exit 1
+	elif [ -z "$3" ]; then
+		>&2 echo "Missing URL."
+		exit 1
+	elif [[ "$3" =~ ^https?:// ]]; then
+		sync "${@:2}"
+	else
+		>&2 echo "Invalid URL."
+		exit 1
+	fi
 fi
