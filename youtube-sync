@@ -70,7 +70,7 @@ function update_symlinks {
 		exit 1
 	fi
 
-	rm "SYNC/$1/LINK/*.mkv"
+	rm SYNC/$1/LINK/*.mkv
 
 	for titlepath in SYNC/$1/META/*.title; do
 		read -r TITLE < "$titlepath"
