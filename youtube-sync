@@ -62,6 +62,26 @@ function sync {
 	fi
 }
 
+function update_symlinks {
+	mkdir -p "SYNC/$1/LINK"
+
+	if [ ! -d "SYNC/$1/META" ]; then
+		>&1 echo "Error: /META directory doesn't exist for $1. Have you run the update command?"
+		exit 1
+	fi
+
+	rm "SYNC/$1/LINK/*.mkv"
+
+	for titlepath in SYNC/$1/META/*.title; do
+		read -r TITLE < "$titlepath"
+		if [[ "$titlepath" =~ /([^/]+)\.title$ ]]; then
+			ID=${BASH_REMATCH[1]};
+			echo "Creating link: $ID -> $TITLE.$ID.mkv"
+			ln -s "../ID/$ID.mkv" "SYNC/$1/LINK/$TITLE.$ID.mkv"
+		fi
+	done
+}
+
 #
 
 function showHelp {
@@ -81,6 +101,10 @@ function showHelp {
 		echo -e "Command: help - usage: $0 update-all <profilename>\n"
 		echo "Updates a profile by fetching all new content along with its metadata."
 		echo "In addition to that, this also updates the metadata of all existing content."
+	elif [ "$1" = "symlinks" ]; then
+		echo -e "Command: help - usage: $0 symlinks <profilename>\n"
+		echo "Clear all symlinks in a profile and recreates them using the cached metadata."
+	
 	else
 		echo -e "Available commands:\n"
 		echo "$0 help       - Shows this help."
@@ -88,6 +112,7 @@ function showHelp {
 		echo "$0 list       - List content syncing profiles."
 		echo "$0 update     - Fetch new content for a profile."
 		echo "$0 update-all - Fetch new content and update all old metadata."
+		echo "$0 symlinks   - Recreate all symlinks for a profile."
 		echo -e "\nRun $0 help <command> to show more details and usage help."
 	fi
 }
@@ -118,6 +143,7 @@ elif [ "$1" = "update" ]; then
 	else
 		sync "$2"
 		update_all_metadata "$2" "missing-only"
+		update_symlinks "$2"
 	fi
 elif [ "$1" = "update-all" ]; then
 	if [ -z "$2" ]; then
@@ -126,5 +152,13 @@ elif [ "$1" = "update-all" ]; then
 	else
 		sync "$2"
 		update_all_metadata "$2"
+		update_symlinks "$2"
+	fi
+elif [ "$1" = "symlinks" ]; then
+	if [ -z "$2" ]; then
+		>&2 echo "Missing sync directory name."
+		exit 1
+	else
+		update_symlinks "$2"
 	fi
 fi
