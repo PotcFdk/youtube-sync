@@ -82,6 +82,26 @@ function update_symlinks {
 	done
 }
 
+function update {
+	sync "$1"
+	update_all_metadata "$1" "missing-only"
+	update_symlinks "$1"
+}
+
+function update_old {
+	sync "$1"
+	update_all_metadata "$1"
+	update_symlinks "$1"
+}
+
+function update_all {
+	for profile in SYNC/*; do
+		sync "${profile##*/}"
+		update_all_metadata "${profile##*/}" "missing-only"
+		update_symlinks "${profile##*/}"
+	done
+}
+
 function list {
 	for profile in SYNC/*; do
 		num_total=$(find "$profile/ID/" -maxdepth 1 -name "*.mkv" | wc -l)
@@ -109,6 +129,9 @@ function showHelp {
 		echo -e "Command: update-old - usage: $0 update-old <profilename>\n"
 		echo "Updates a profile by fetching all new content along with its metadata."
 		echo "In addition to that, this also updates the metadata of all existing content."
+	elif [ "$1" = "update-all" ]; then
+		echo -e "Command: update-all - usage: $0 update-all <profilename>\n"
+		echo "Updates all profiles by fetching all new content along with its metadata."
 	elif [ "$1" = "symlinks" ]; then
 		echo -e "Command: symlinks - usage: $0 symlinks <profilename>\n"
 		echo "Clear all symlinks in a profile and recreates them using the cached metadata."
@@ -120,6 +143,7 @@ function showHelp {
 		echo "$0 list       - List content syncing profiles."
 		echo "$0 update     - Fetch new content for a profile."
 		echo "$0 update-old - Like 'update', but update all old metadata."
+		echo "$0 update-all - Run 'update' on all profiles."
 		echo "$0 symlinks   - Recreate all symlinks for a profile."
 		echo -e "\nRun $0 help <command> to show more details and usage help."
 	fi
@@ -151,19 +175,17 @@ elif [ "$1" = "update" ]; then
 		>&2 echo "Missing sync directory name."
 		exit 1
 	else
-		sync "$2"
-		update_all_metadata "$2" "missing-only"
-		update_symlinks "$2"
+		update "${@:2}"
 	fi
 elif [ "$1" = "update-old" ]; then
 	if [ -z "$2" ]; then
 		>&2 echo "Missing sync directory name."
 		exit 1
 	else
-		sync "$2"
-		update_all_metadata "$2"
-		update_symlinks "$2"
+		update_old "${@:2}"
 	fi
+elif [ "$1" = "update-all" ]; then
+	update_all
 elif [ "$1" = "symlinks" ]; then
 	if [ -z "$2" ]; then
 		>&2 echo "Missing sync directory name."
