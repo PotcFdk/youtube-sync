@@ -44,17 +44,18 @@ Just re-do the three steps above:
 
 ## Usage
 
-`./youtube-sync.sh NAME URL` - Create a working directory in `SYNC/[NAME]` and download all videos of `URL` to `SYNC/[NAME]/ID/[videoid].mkv`.  
-`./youtube-update-metadata.sh NAME` - Update the video metadata cache in `SYNC/[NAME]/META`.  
-`./youtube-rebuild-links.sh NAME` - Recreate all symlinks in `SYNC/[NAME]/LINK` using the video title cache.  
+Note: This list is an incomplete list. For all commands, run `./youtube-sync help`.  
+
+`./youtube-sync setup NAME URL` - Create a profile ("working directory") in `SYNC/[NAME]`.  
+`./youtube-sync update NAME` - Update the content of the profile "NAME" (located in in `SYNC/[NAME]/META`).  
 
 ## I want to see an example!
 Sure thing, here you go, the basic workflow for the initial sync of a channel (`https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`):  
 
 
-#### Step 1: sync videos
-This will grab all videos from the channel and create a working directory in `SYNC/LADYBABY`:  
-`./youtube-sync.sh LADYBABY https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`
+#### Step 1: setup a profile
+This will create a profile for grabbing all videos from the channel and saving them to `SYNC/LADYBABY`:  
+`./youtube-sync setup LADYBABY https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`
 
 And this is how our directory tree looks like after the above command finishes:
 
@@ -87,97 +88,39 @@ SYNC/
 3 directories, 19 files
 ```
 
-#### Step 2: update video metadata cache
+#### Step 2: update
 ```
-$ ./youtube-update-metadata.sh LADYBABY 2>/dev/null
-Updating metadata (1/18): 0wowOJv4KnI... [OK]
-Updating metadata (2/18): 3zWwd8n2JVI... [OK]
-Updating metadata (3/18): FD9jZGRLhgM... [OK]
-Updating metadata (4/18): FGwD7APkGMA... [OK]
-Updating metadata (5/18): G5qKciYpkgo... [OK]
-Updating metadata (6/18): H8eaZ3awQ_w... [OK]
-Updating metadata (7/18): iPb4fns-hvY... [OK]
-Updating metadata (8/18): jXEd-Xmo9Rs... [OK]
-Updating metadata (9/18): KZSBZ3zAZKA... [OK]
-Updating metadata (10/18): M8-vje-bq9c... [OK]
-Updating metadata (11/18): MDi-P0G9VMU... [OK]
-Updating metadata (12/18): NtwJ-YMyShY... [OK]
-Updating metadata (13/18): OBGi4SOfzgQ... [OK]
-Updating metadata (14/18): PLEjiiZc3kQ... [OK]
-Updating metadata (15/18): rtliSSbOCoA... [OK]
-Updating metadata (16/18): t7LFwrCS1ws... [OK]
-Updating metadata (17/18): tH-U-rFWnVQ... [OK]
-Updating metadata (18/18): vpTnIGxzLkI... [OK]
-```
-
-Directory tree after the above command finishes:
-
-```
-$ tree SYNC/
-SYNC/
-└── LADYBABY
-    ├── ID
-    │   ├── 0wowOJv4KnI.mkv
-    │   ├── 3zWwd8n2JVI.mkv
-    │   ├── FD9jZGRLhgM.mkv
-    [...]
-    │   ├── rtliSSbOCoA.mkv
-    │   ├── t7LFwrCS1ws.mkv
-    │   ├── tH-U-rFWnVQ.mkv
-    │   └── vpTnIGxzLkI.mkv
-    └── META
-        ├── 0wowOJv4KnI.description
-        ├── 0wowOJv4KnI.title
-        ├── 3zWwd8n2JVI.description
-        [...]
-        ├── PLEjiiZc3kQ.description
-        ├── PLEjiiZc3kQ.title
-        ├── rtliSSbOCoA.description
-        ├── rtliSSbOCoA.title
-        ├── source
-        ├── t7LFwrCS1ws.description
-        ├── t7LFwrCS1ws.title
-        ├── tH-U-rFWnVQ.description
-        ├── tH-U-rFWnVQ.title
-        ├── vpTnIGxzLkI.description
-        └── vpTnIGxzLkI.title
-
-3 directories, 55 files
-```
-
-The metadata is saved in these text files:  
-```
-$ cat SYNC/LADYBABY/META/0wowOJv4KnI.title
-LADYBABYチャンネル　Vol.3　THE潜入！レコーディング編
-
-$ cat SYNC/LADYBABY/META/0wowOJv4KnI.description
-あらゆるカルチャーを継承、破壊、そして創造する新感覚エンタメユニットLADYBA­BY。
+$ ./youtube-sync update LADYBABY
+[youtube:channel] UCKlfTlx0oY6BiCH7Qvabrhg: Downloading channel page
+[youtube:playlist] UUKlfTlx0oY6BiCH7Qvabrhg: Downloading webpage
+[download] Downloading playlist: Uploads from LADYBABY
+[youtube:playlist] playlist Uploads from LADYBABY: Downloading 20 videos
+[download] Downloading video 1 of 20
+[youtube] yhT2-oX5kzk: Downloading webpage
+[youtube] yhT2-oX5kzk: Downloading video info webpage
+[youtube] yhT2-oX5kzk: Extracting video information
+[youtube] yhT2-oX5kzk: Downloading MPD manifest
+[download] Destination: SYNC/LADYBABY/ID/yhT2-oX5kzk.mkv.f137
+[download] 100% of 118.57MiB in 00:04
+[download] Destination: SYNC/LADYBABY/ID/yhT2-oX5kzk.mkv.f251
+[download] 100% of 4.21MiB in 00:00
+[ffmpeg] Merging formats into "SYNC/LADYBABY/ID/yhT2-oX5kzk.mkv"
+WARNING: Your copy of avconv is outdated, update avconv to version 10-0 or newer if you encounter any errors.
+Deleting original file SYNC/LADYBABY/ID/yhT2-oX5kzk.mkv.f137 (pass -k to keep)
+Deleting original file SYNC/LADYBABY/ID/yhT2-oX5kzk.mkv.f251 (pass -k to keep)
+[download] Downloading video 2 of 20
 [...]
-LADYBABY公式サイト　http://www.clearstone.co.jp/ladybaby/
-出演依頼・取材依頼はこちら→ladybaby@clearstone.co.jp
-```
-
-#### Step 3: rebuild symlinks
-```
-$ ./youtube-rebuild-links.sh LADYBABY
+[download] Finished downloading playlist: Uploads from LADYBABY
+(1/20) Updating metadata: 0wowOJv4KnI... [OK]
+(2/20) Updating metadata: 3zWwd8n2JVI... [OK]
+[...]
+(19/20) Updating metadata: vpTnIGxzLkI... [OK]
+(20/20) Updating metadata: yhT2-oX5kzk... [OK]
 Creating link: 0wowOJv4KnI -> LADYBABYチャンネル　Vol.3　THE潜入！レコーディング編.0wowOJv4KnI.mkv
 Creating link: 3zWwd8n2JVI -> LADYBABY「アゲアゲマネー ～おちんぎん大作戦～／Age-Age Money」 Music Clip.3zWwd8n2JVI.mkv
-Creating link: FD9jZGRLhgM -> LADYBABYチャンネル　Vol.2　「ステージに立つために」.FD9jZGRLhgM.mkv
-Creating link: FGwD7APkGMA -> KARAOKE JOYSOUND「ニッポン饅頭 -Nippon Manju」Music Clip Ver..FGwD7APkGMA.mkv
-Creating link: G5qKciYpkgo -> [ビアちゃんver.] ニッポン饅頭 振り付け講座.G5qKciYpkgo.mkv
-Creating link: H8eaZ3awQ_w -> [りえver.] ニッポン饅頭 振り付け講座.H8eaZ3awQ_w.mkv
-Creating link: iPb4fns-hvY -> [れいver.] ニッポン饅頭 振り付け講座.iPb4fns-hvY.mkv
-Creating link: jXEd-Xmo9Rs -> 【重大発表】4.13 3rdシングル発売 ＆ 4.15 国内初ワンマンライブ決定.jXEd-Xmo9Rs.mkv
-Creating link: KZSBZ3zAZKA -> LADYBABY LIVE Die Essigfabrik Köln (Deutschland) _ Dez. 5 2015.KZSBZ3zAZKA.mkv
-Creating link: M8-vje-bq9c -> LADYBABY「ニッポン饅頭 _ Nippon Manju」Music Clip.M8-vje-bq9c.mkv
-Creating link: MDi-P0G9VMU -> [ LADYBABY ] ニッポン饅頭 振り付け講座 Nippon Manju dancing school.MDi-P0G9VMU.mkv
-Creating link: NtwJ-YMyShY -> LADYBABYチャンネル　Vol.1　「ステージ衣装はどこ？」.NtwJ-YMyShY.mkv
-Creating link: OBGi4SOfzgQ -> LADYBABY LIVE @HYPER JAPAN 27-29 Nov 2015.OBGi4SOfzgQ.mkv
-Creating link: PLEjiiZc3kQ -> KARAOKE DAM「ニッポン饅頭 -Nippon Manju」Funny Ver..PLEjiiZc3kQ.mkv
-Creating link: rtliSSbOCoA -> LADYBABYチャンネル　Vol.0　「誕生編」.rtliSSbOCoA.mkv
-Creating link: t7LFwrCS1ws -> おまけ [ミキティー本物] ニッポン饅頭 振り付け講座.t7LFwrCS1ws.mkv
-Creating link: tH-U-rFWnVQ -> LADYBABY 'OVERTURE' ～MEMORIES of 2015 ～.tH-U-rFWnVQ.mkv
+[...]
 Creating link: vpTnIGxzLkI -> LADYBABY NYC LIVE at SOB's Oct 11 2015.vpTnIGxzLkI.mkv
+Creating link: yhT2-oX5kzk -> LADYBABY「セシボン・キブン／C'est si bon Kibun」Music Clip.yhT2-oX5kzk.mkv
 ```
 
 Directory tree after the above command finishes:
@@ -215,4 +158,16 @@ SYNC/
         └── vpTnIGxzLkI.title
 
 4 directories, 73 files
+```
+
+The metadata is saved in the text files in /META:  
+```
+$ cat SYNC/LADYBABY/META/0wowOJv4KnI.title
+LADYBABYチャンネル　Vol.3　THE潜入！レコーディング編
+
+$ cat SYNC/LADYBABY/META/0wowOJv4KnI.description
+あらゆるカルチャーを継承、破壊、そして創造する新感覚エンタメユニットLADYBA­BY。
+[...]
+LADYBABY公式サイト　http://www.clearstone.co.jp/ladybaby/
+出演依頼・取材依頼はこちら→ladybaby@clearstone.co.jp
 ```
