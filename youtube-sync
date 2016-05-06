@@ -191,4 +191,8 @@ elif [ "$1" = "symlinks" ]; then
 	else
 		update_symlinks "$2"
 	fi
+else
+	>&2 echo "Invalid/Unknown command."
+	showHelp
+	exit 1
 fi
