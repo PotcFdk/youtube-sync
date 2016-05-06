@@ -11,7 +11,7 @@ In fact, [future changes](https://github.com/PotcFdk/youtube-sync/issues?q=is%3A
 
 ### What can this script do that youtube-dl can't?
 This script improves the management of a local copy of an entire YouTube channel.  
-It will handle collisions, no-more-available videos and it will also keep a video's title up-to-date.
+It will handle collisions, no-more-available videos and it will also keep a video's metadata up-to-date.
 
 ### How does this work?
 We split the management into three sections:
