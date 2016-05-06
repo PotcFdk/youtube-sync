@@ -36,7 +36,6 @@ function update_all_metadata {
 				if [ "$domissing" = "missing-only" \
 						-a -f $titlefile -a -f $descfile ]; then
 					echo "Skipping known meta for $ID"
-					num_current=$((num_current+1))
 				else
 					echo -n "($num_current/$num_total) ";
 					update_metadata "$ID" "$titlefile" "$descfile"
