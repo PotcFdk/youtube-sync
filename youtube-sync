@@ -28,6 +28,16 @@ function selfupdate {
 	exit
 }
 
+function enable_profile {
+	if [ -f "SYNC/$1/.disabled" ]; then
+		rm "SYNC/$1/.disabled"
+	fi
+}
+
+function disable_profile {
+	touch "SYNC/$1/.disabled"
+}
+
 function update_metadata {
 	ID="$1"
 	titlefile="$2"
@@ -146,9 +156,11 @@ function update_old {
 
 function update_all {
 	for profile in SYNC/*; do
-		sync "${profile##*/}"
-		update_all_metadata "${profile##*/}" "missing-only"
-		update_symlinks "${profile##*/}"
+		if [ ! -f "$profile/.disabled" ]; then
+			sync "${profile##*/}"
+			update_all_metadata "${profile##*/}" "missing-only"
+			update_symlinks "${profile##*/}"
+		fi
 	done
 }
 
