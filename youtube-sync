@@ -14,6 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [ -f "$0.preupdate" ]; then
+	rm "$0.preupdate"
+fi
+
+function selfupdate {
+	echo "Updating YoutubeDL..."
+	youtube-dl -U
+	echo "Updating repository..."
+	cp "$0" "$0.preupdate" && chmod -x "$0.preupdate" && git checkout -- "$0" && git pull -p
+	echo "Updated."
+	rm "$0.preupdate"
+	exit
+}
 
 function update_metadata {
 	ID="$1"
@@ -155,6 +168,9 @@ function showHelp {
 	elif [ "$1" = "symlinks" ]; then
 		echo -e "Command: symlinks - usage: $0 symlinks <profilename>\n"
 		echo "Clear all symlinks in a profile and recreates them using the cached metadata."
+	elif [ "$1" = "selfupdate" ]; then
+		echo -e "Command: selfupdate - usage: $0 selfupdate\n"
+		echo "Updates youtube-sync using git and triggers a youtube-dl self-update."
 	else
 		echo -e "Available commands:\n"
 		echo "$0 help       - Shows this help."
@@ -164,6 +180,7 @@ function showHelp {
 		echo "$0 update-old - Like 'update', but update all old metadata."
 		echo "$0 update-all - Run 'update' on all profiles."
 		echo "$0 symlinks   - Recreate all symlinks for a profile."
+		echo "$0 selfupdate - Update youtube-sync and youtube-dl."
 		echo -e "\nRun $0 help <command> to show more details and usage help."
 	fi
 }
@@ -212,6 +229,8 @@ elif [ "$1" = "symlinks" ]; then
 	else
 		update_symlinks "$2"
 	fi
+elif [ "$1" = "selfupdate" ]; then
+	selfupdate
 else
 	>&2 echo "Invalid/Unknown command."
 	showHelp
