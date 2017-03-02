@@ -38,9 +38,9 @@ That way, you will have a directory with files (symlinks) that contain the video
 
 ### How can I keep my local copy up-to-date?
 Just re-do the three steps above:  
-* Step 1 will download all missing videos that have been added to the channel since your last sync. Old videos are left untouched and will stay in your local copy, even if they are deleted from the YouTube channel.  
-* Step 2 will update all cached video metadata. If an old video has been taken down, the old metadata will be left untouched.  
-* Step 3 will remove all symlinks and rebuild them using the title cache from step 2. This way, you will always have a directory where the videos have the most up-to-date video title in their file name.  
+* Section 1 will download all missing videos that have been added to the channel since your last sync. Old videos are left untouched and will stay in your local copy, even if they are deleted from the YouTube channel.  
+* Section 2 will update all cached video metadata. If an old video has been taken down, the old metadata will be left untouched.  
+* Section 3 will remove all symlinks and rebuild them using the title cache from step 2. This way, you will always have a directory where the videos have the most up-to-date video title in their file name.  
 
 ## Usage
 
@@ -60,32 +60,15 @@ This will create a profile for grabbing all videos from the channel and saving t
 And this is how our directory tree looks like after the above command finishes:
 
 ```
+$ ./youtube-sync setup LADYBABY https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg
+Set up profile. You can run 'update' on this profile now.
 $ tree SYNC/
 SYNC/
 └── LADYBABY
-    ├── ID
-    │   ├── 0wowOJv4KnI.mkv
-    │   ├── 3zWwd8n2JVI.mkv
-    │   ├── FD9jZGRLhgM.mkv
-    │   ├── FGwD7APkGMA.mkv
-    │   ├── G5qKciYpkgo.mkv
-    │   ├── H8eaZ3awQ_w.mkv
-    │   ├── iPb4fns-hvY.mkv
-    │   ├── jXEd-Xmo9Rs.mkv
-    │   ├── KZSBZ3zAZKA.mkv
-    │   ├── M8-vje-bq9c.mkv
-    │   ├── MDi-P0G9VMU.mkv
-    │   ├── NtwJ-YMyShY.mkv
-    │   ├── OBGi4SOfzgQ.mkv
-    │   ├── PLEjiiZc3kQ.mkv
-    │   ├── rtliSSbOCoA.mkv
-    │   ├── t7LFwrCS1ws.mkv
-    │   ├── tH-U-rFWnVQ.mkv
-    │   └── vpTnIGxzLkI.mkv
     └── META
         └── source
 
-3 directories, 19 files
+2 directories, 1 file
 ```
 
 #### Step 2: update
