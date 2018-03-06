@@ -6,7 +6,7 @@ Usage help [here](#usage) (though, you should read all of that stuff below to kn
 
 youtube-sync is developed and maintained [on GitHub](https://github.com/PotcFdk/youtube-sync)  
 
-**/!\ This project is a WIP and it shouldn't be considered stable. /!\**  
+**/!\\ This project is a WIP and it shouldn't be considered stable. /!\\**  
 In fact, [future changes](https://github.com/PotcFdk/youtube-sync/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) might change the way `youtube-sync` works, both internally and interface-wise. This README will always be kept up-to-date to reflect the current state of how everything works.
 
 ### What can this script do that youtube-dl can't?
