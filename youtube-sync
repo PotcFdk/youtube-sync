@@ -80,15 +80,25 @@ function update_all_metadata {
 	done
 }
 
+function set_default_option {
+	test -e "SYNC/$1/META/$2" || echo -n "$3" > "SYNC/$1/META/$2"
+}
+
+function set_default_options {
+	set_default_option "$1" "format" "bestvideo+bestaudio"
+}
+
 function sync {
 	if [ -n "$2" ]; then
 		URL="$2"
 		mkdir -p "SYNC/$1/META"
 		echo -n "$URL" > "SYNC/$1/META/source"
+		set_default_options "$1"
 		echo "Set up profile. You can run 'update' on this profile now."
 	elif [ -f "SYNC/$1/META/source" ]; then
 		read -r URL < "SYNC/$1/META/source"
-		youtube-dl -i -f bestvideo+bestaudio --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
+		set_default_options "$1"
+		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
 	else
 		>&2 echo "Fatal error: Missing URL in profile '$1'."
 		exit 1
