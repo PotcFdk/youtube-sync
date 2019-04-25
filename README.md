@@ -50,15 +50,9 @@ Note: This list is an incomplete list. For all commands, run `./youtube-sync hel
 `./youtube-sync update NAME` - Update the content of the profile "NAME" (located in in `SYNC/[NAME]/META`).  
 
 ### Login/Cookies
-To sync your private playlists (e.g. [Watch Later](https://www.youtube.com/playlist?list=WL)) or private videos of your channel you need a `cookies.txt` file.
+To sync your private playlists (e.g. [Watch Later](https://www.youtube.com/playlist?list=WL)) or private videos of your channel you need a `cookies.txt` file. see [”How do I pass cookies to youtube-dl?“](https://github.com/ytdl-org/youtube-dl/blob/master/README.md#user-content-how-do-i-pass-cookies-to-youtube-dl).
 
-1. Download `cookies.txt` extension for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) or [Google Chrome](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
-1. [Log in](https://www.youtube.com/signin) to YouTube if not logged in already.
-1. Click on the `cookies.txt` extension icon and export your cookies to either into the same folder where `youtube-sync` is resided. Or into the `SYNC/[NAME]/META` folder.
-
-If found, `youtube-sync` will use `./cookies.txt` file as cookie for every synced playlist/channel by default.
-
-If a `cookies.txt` file is located at `SYNC/[NAME]/META` then `youtube-sync` will use it for that specific playlist/channel.
+You can put the `cookies.txt` file in as `./cookies.txt` (applies for every profile). Or in `SYNC/[NAME]/META` folder (for that specific sync profile).
 
 ## I want to see an example!
 Sure thing, here you go, the basic workflow for the initial sync of a channel (`https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`):  
