@@ -97,13 +97,13 @@ function sync {
 		echo "Set up profile. You can run 'update' on this profile now."
 	elif [ -f "SYNC/$1/META/source" ]; then
 		read -r URL < "SYNC/$1/META/source"
-        if [ -f "SYNC/$1/META/cookies.txt" ]; then
-            COOKIE=" --cookies SYNC/$1/META/cookies.txt"
+		if [ -f "SYNC/$1/META/cookies.txt" ]; then
+			COOKIE=" --cookies SYNC/$1/META/cookies.txt"
 		elif [ -f "cookies.txt" ]; then
-		    COOKIE=" --cookies cookies.txt"
+			COOKIE=" --cookies cookies.txt"
 		else
-		    COOKIE=""
-        fi
+			COOKIE=""
+		fi
 		set_default_options "$1"
 		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" $COOKIE --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
 	else
