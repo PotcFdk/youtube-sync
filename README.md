@@ -49,6 +49,11 @@ Note: This list is an incomplete list. For all commands, run `./youtube-sync hel
 `./youtube-sync setup NAME URL` - Create a profile ("working directory") in `SYNC/[NAME]`.  
 `./youtube-sync update NAME` - Update the content of the profile "NAME" (located in in `SYNC/[NAME]/META`).  
 
+### Login/Cookies
+To sync your private playlists (e.g. [Watch Later](https://www.youtube.com/playlist?list=WL)) or private videos of your channel you need a `cookies.txt` file. see [”How do I pass cookies to youtube-dl?“](https://github.com/ytdl-org/youtube-dl/blob/master/README.md#user-content-how-do-i-pass-cookies-to-youtube-dl).
+
+You can put the `cookies.txt` file in as `./cookies.txt` (applies for every profile). Or in `SYNC/[NAME]/META` folder (for that specific sync profile).
+
 ## I want to see an example!
 Sure thing, here you go, the basic workflow for the initial sync of a channel (`https://www.youtube.com/channel/UCKlfTlx0oY6BiCH7Qvabrhg`):  
 

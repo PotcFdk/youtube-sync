@@ -32,10 +32,10 @@ function update_metadata {
 	ID="$1"
 	titlefile="$2"
 	descfile="$3"
-	
+
 	echo -n "Updating metadata: $ID..."
 	echo -n " [title"
-	
+
 	TITLE=$(youtube-dl --get-filename -o '%(title)s' -- "$ID");
 	if [ -z "$TITLE" ]; then
 		echo -n ":Error] Empty title. Video might be down. We'll keep the old link."
@@ -97,8 +97,15 @@ function sync {
 		echo "Set up profile. You can run 'update' on this profile now."
 	elif [ -f "SYNC/$1/META/source" ]; then
 		read -r URL < "SYNC/$1/META/source"
+		if [ -f "SYNC/$1/META/cookies.txt" ]; then
+			COOKIE=( --cookies SYNC/$1/META/cookies.txt)
+		elif [ -f "cookies.txt" ]; then
+			COOKIE=( --cookies cookies.txt)
+		else
+			COOKIE=()
+		fi
 		set_default_options "$1"
-		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
+		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
 	else
 		>&2 echo "Fatal error: Missing URL in profile '$1'."
 		exit 1
