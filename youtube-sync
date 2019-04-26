@@ -98,9 +98,9 @@ function sync {
 	elif [ -f "SYNC/$1/META/source" ]; then
 		read -r URL < "SYNC/$1/META/source"
 		if [ -f "SYNC/$1/META/cookies.txt" ]; then
-			COOKIE=( --cookies SYNC/$1/META/cookies.txt)
+			COOKIE=(--cookies "SYNC/$1/META/cookies.txt")
 		elif [ -f "cookies.txt" ]; then
-			COOKIE=( --cookies cookies.txt)
+			COOKIE=(--cookies cookies.txt)
 		else
 			COOKIE=()
 		fi
