@@ -75,7 +75,7 @@ SYNC/
         ├── format
         └── source
 
-2 directories, 1 file
+2 directories, 2 files
 ```
 
 #### Step 2: update
