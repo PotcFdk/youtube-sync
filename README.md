@@ -72,6 +72,7 @@ $ tree SYNC/
 SYNC/
 └── LADYBABY
     └── META
+        ├── format
         └── source
 
 2 directories, 1 file
