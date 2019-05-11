@@ -85,7 +85,7 @@ function set_default_option {
 }
 
 function set_default_options {
-	set_default_option "$1" "format" "bestvideo+bestaudio"
+	set_default_option "$1" "format" "bestvideo+bestaudio/best"
 }
 
 function sync {
