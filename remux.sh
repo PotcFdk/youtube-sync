@@ -3,26 +3,30 @@
 # remuxing mp4 files to mkv if needed
 
 dlfile="$1"
-remuxedfile="$1"
+remuxedfile="${dlfile/.mp4/.mkv}"
 
 if [ -f "$dlfile" ]; then
     if [[  $dlfile == *".mkv" ]]; then
-    	: #downloaded file is allready a mkv, nothing to do here.
+    	echo "[remux] Downloaded file is allready an mkv, no remux needed."
     elif [[  $dlfile == *".mp4" ]]; then
-    	#mp4 will be remuxed to mkv
-    	if ffmpeg -i "SYNC/$1/ID/$ID.mp4" -map 0 -c copy -disposition:s:0 0 -c:s webvtt "SYNC/$1/ID/$ID.mkv" ; then
+    	echo -e "[remux] Start to remux $dlfile to $remuxedfile.\nIf you see this message too often, you should maybe change the syntax of your ytdl-format in the [META/format] file to avoid unnecessary IO.\nCheckout https://github.com/ytdl-org/youtube-dl/blob/master/README.md#format-selection"
+    	if ffmpeg -loglevel warning -hide_banner -i "$dlfile" -map 0 -c copy -disposition:s:0 0 -c:s webvtt "$remuxedfile" ; then
     	    if [ -f "$remuxedfile" ]; then
-    	    	read -p "its converted check now"
-    	    	#rm -rf $dlfile
+    	    	rm -rf $dlfile
+                echo "[remux] Remux successfull"
     	    else
-    	    	echo "Remuxed file $dlfile is missing. Something went wrong!"
+    	    	echo "[remux] Remuxed file $dlfile is missing. Something went wrong!"
+                exit 1
     	    fi
     	else
-    	    echo "Remux from $dlfile to MKV failed. Check ffmpeg log for details."
+    	    echo "[remux] Remux from $dlfile to $remuxedfile failed. Check ffmpeg log for details."
+            exit 1
     	fi
     else
-    	read -p "Downloaded file is neither a mkv or a mp4, something went wrong or its a webm. Check your ytdl-format syntax"
+    	read -p "[remux] Downloaded file is neither a mkv nor a mp4, something went wrong or its a webm. Check your ytdl-format syntax."
+        exit 1
     fi
 else
-	echo "Downloaded file $dlfile not found. Something went wrong.";
+	echo "[remux] Downloaded file $dlfile not found. Something went wrong.";
+    exit 1
 fi

@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 if [ -f "$0.preupdate" ]; then
 	rm "$0.preupdate"
 fi
@@ -105,7 +107,7 @@ function sync {
 			COOKIE=()
 		fi
 		set_default_options "$1"
-		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.%(ext)s" "$URL" --exec "$(pwd)/remux.sh {}"
+		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.%(ext)s" "$URL" --exec "$scriptdir/remux.sh {}"
 	else
 		>&2 echo "Fatal error: Missing URL in profile '$1'."
 		exit 1
