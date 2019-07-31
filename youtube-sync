@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+scriptpath="$(realpath "$0")"
 
 if [ -f "$0.preupdate" ]; then
 	rm "$0.preupdate"
@@ -87,7 +87,11 @@ function set_default_option {
 }
 
 function set_default_options {
-	set_default_option "$1" "format" "bestvideo+bestaudio/best"
+	defaultformat="$(cat "default-format")"
+	if [ -z "$defaultformat" ]; then
+		defaultformat="bestvideo+bestaudio/best"
+	fi
+	set_default_option "$1" "format" "$defaultformat"
 }
 
 function sync {
@@ -107,10 +111,41 @@ function sync {
 			COOKIE=()
 		fi
 		set_default_options "$1"
-		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.%(ext)s" "$URL" --exec "$scriptdir/remux.sh {}"
+		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.%(ext)s" "$URL" --exec "$scriptpath remux {}"
 	else
 		>&2 echo "Fatal error: Missing URL in profile '$1'."
 		exit 1
+	fi
+}
+
+function remux {
+	dlfile="$1"
+	remuxedfile="${dlfile/.mp4/.mkv}"
+
+	if [ -f "$dlfile" ]; then
+	    if [[  $dlfile == *".mkv" ]]; then
+	    	echo "[remux] Downloaded file is allready an mkv, no remux needed."
+	    elif [[  $dlfile == *".mp4" ]]; then
+	    	echo -e "[remux] Start to remux $dlfile to $remuxedfile.\nIf you see this message too often, you should maybe change the syntax of your ytdl-format in the [META/format] file to avoid unnecessary IO.\nCheckout https://github.com/ytdl-org/youtube-dl/blob/master/README.md#format-selection"
+	    	if ffmpeg -loglevel warning -hide_banner -i "$dlfile" -map 0 -c copy -disposition:s:0 0 -c:s webvtt "$remuxedfile" ; then
+	    	    if [ -f "$remuxedfile" ]; then
+	    	    	rm -rf $dlfile
+	                echo "[remux] Remux successfull"
+	    	    else
+	    	    	echo "[remux] Remuxed file $dlfile is missing. Something went wrong!"
+	                exit 1
+	    	    fi
+	    	else
+	    	    echo "[remux] Remux from $dlfile to $remuxedfile failed. Check ffmpeg log for details."
+	            exit 1
+	    	fi
+	    else
+	    	read -p "[remux] Downloaded file is neither a mkv nor a mp4, something went wrong or its a webm. Check your ytdl-format syntax."
+	        exit 1
+	    fi
+	else
+		echo "[remux] Downloaded file $dlfile not found. Something went wrong.";
+	    exit 1
 	fi
 }
 
@@ -250,6 +285,8 @@ elif [ "$1" = "symlinks" ]; then
 	fi
 elif [ "$1" = "selfupdate" ]; then
 	selfupdate
+elif [ "$1" = "remux" ]; then
+	remux "${@:2}"
 else
 	>&2 echo "Invalid/Unknown command."
 	showHelp
