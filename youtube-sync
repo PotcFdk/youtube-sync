@@ -61,6 +61,8 @@ function update_all_metadata {
 	num_total=$(find "SYNC/$name/ID/" -maxdepth 1 -name "*.mkv" | wc -l)
 	num_current=1
 
+	if (($num_total == 0)); then return; fi
+
 	for filen in SYNC/$name/ID/*.mkv; do
 		if [ -f "$filen" ]; then
 			if [[ "$filen" =~ /([^/]+)\.mkv$ ]]; then
@@ -117,6 +119,11 @@ function update_symlinks {
 
 	if [ ! -d "SYNC/$1/META" ]; then
 		>&1 echo "Error: /META directory doesn't exist for $1. Have you run the update command?"
+		exit 1
+	fi
+
+	if [ ! "$(find "SYNC/$1/META" -maxdepth 1 -iname "*.title")" ]; then
+		>&1 echo "Error: /META directory seems to be empty for $1. Have you run the update command? Does the profile have videos?"
 		exit 1
 	fi
 
