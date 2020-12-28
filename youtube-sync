@@ -107,7 +107,7 @@ function sync {
 			COOKIE=()
 		fi
 		set_default_options "$1"
-		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
+		youtube-dl -i -f "$(cat "SYNC/$1/META/format")" "${COOKIE[@]}" --download-archive "SYNC/$1/META/contentlist" --all-subs --embed-subs --merge-output-format mkv -o "SYNC/$1/ID/%(id)s.mkv" "$URL"
 	else
 		>&2 echo "Fatal error: Missing URL in profile '$1'."
 		exit 1
